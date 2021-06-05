@@ -12,12 +12,13 @@ main () {
   while (( $# )); do
     case $1 in
       -t|--tag)
-        (( $# >= 5 )) || die "$(usage)"
+        (( $# >= 3 )) || die "$(usage)"
         shift; k="$1"
         ;;
       -a|--asg|-v|--value)
-        args+=( "${k:-aws:autoscaling:groupName}" )
-        shift; args+=( "$1" )
+        (( $# >= 3 )) || die "$(usage)"
+        k="${k:-aws:autoscaling:groupName}"
+        shift; v="$1"
         ;;
       -h|--help) help; exit ;;
       --)        shift; break ;;
@@ -29,15 +30,14 @@ main () {
 
   set -- ${args[@]:+"${args[@]}"} "$@"
 
-  (( $# >= 3 )) || die "$(usage)"
+  (( $# >= 1 )) || die "$(usage)"
 
   for x in aws tmux session-manager-plugin; do
     has "$x"
   done
 
-  ids="$(get_instances "$1" "$2")"
-
-  tmux_ssm_session "${ids}" "sudo ${*:3}"
+  ids="$(get_instances "${k}" "${v}")"
+  tmux_ssm_session "${ids}" "sudo $*"
 }
 
 tmux_ssm_session () {
@@ -46,7 +46,6 @@ tmux_ssm_session () {
   session="${BASENAME%%.*}-$(mktemp -u XXXXXX)"
 
   tmux new-session -d -s "${session}" >/dev/null
-
   trap 'tmux kill-session -t "${session}" 2>/dev/null' EXIT
 
   for i in ${instances}; do
@@ -123,8 +122,6 @@ has () {
   command -vp "$1" &>/dev/null || die "error: executable '${x}' not found"
 }
 
-die () {
-  printf '%s\n' "$*" >&2; exit 1
-}
+die () { printf '%s\n' "$*" >&2; exit 1; }
 
 main "$@"
