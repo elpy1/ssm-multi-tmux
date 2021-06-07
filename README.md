@@ -58,6 +58,7 @@ output `date` every second  on instances with tag key **app-server** and tag val
 multissm.sh --tag app-server --value drupal-frontend -- watch -t -n1 date +%s 
 ```
 ## Demo  
+executing `htop` on an autoscaling group containing 4 instances
 ![multissm demo htop](demo/multissm.gif)
   
 ## Authors  
