@@ -119,7 +119,7 @@ EOF
 }
 
 has () {
-  command -vp "$1" &>/dev/null || die "error: executable '${x}' not found"
+  command -v "$1" &>/dev/null || die "error: executable '${x}' not found"
 }
 
 die () { printf '%s\n' "$*" >&2; exit 1; }
