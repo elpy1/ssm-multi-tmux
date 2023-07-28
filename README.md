@@ -25,7 +25,7 @@ cp ssm-multi-tmux/multissm.sh ~/.local/bin
   
 Ensure directory is in your `PATH`
 ```  
-echo "PATH="{PATH:+${PATH}:}$HOME/.local/bin" >> ~/.bashrc
+echo "PATH=$HOME/.local/bin${PATH:+:${PATH}}" >> ~/.bashrc
 ```
   
 ## Usage  
