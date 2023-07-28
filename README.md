@@ -34,15 +34,16 @@ The script can be used by specifying either an EC2 autoscaling group name or the
 Usage: multissm.sh [-h] [-t <key>] -v <value> | -a <asg name> [--] <command>  
 Try 'multissm.sh --help' for more information.
 ```
-
+  
+## Examples
 ### Connect to EC2 instances in an autoscaling group
-`htop` on instances in autoscaling group **wordpress-prod**:
+Execute `htop` on instances in autoscaling group **wordpress-prod**:
   
 ```  
 multissm.sh --asg wordpress-prod htop
 ```
   
-tail `httpd` journal log output on instances in autoscaling group **drupal-web-asg**:
+Tail `httpd` journal output on instances in autoscaling group **drupal-web-asg**:
 ```
 multissm.sh --asg drupal-web-asg -- journalctl -f -u httpd
 ```
@@ -53,16 +54,13 @@ Execute `bash` on instances with a tag key of **Name** and tag value of **prod-i
 multissm.sh --tag Name --value prod-internal-cms02 -- bash 
 ```
    
-output `date` every second  on instances with tag key **app-server** and tag value **drupal-frontend**:
+Output `date` every second on instances with tag key **app-server** and tag value **drupal-frontend**:
 ```
 multissm.sh --tag app-server --value drupal-frontend -- watch -t -n1 date +%s 
 ```
 ## Demo  
-executing `htop` on an autoscaling group containing 4 instances
+Executing `htop` on an autoscaling group containing 4 instances
 ![multissm demo htop](demo/multissm.gif)
-  
-## Authors  
-* **elpy1** - https://github.com/elpy1  
   
 ## License  
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
